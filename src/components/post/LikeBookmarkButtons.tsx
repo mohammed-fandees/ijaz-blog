@@ -73,7 +73,9 @@ export function LikeBookmarkButtons({
       }
     });
     
-    return unsubscribe;
+    return () => {
+      unsubscribe();
+    };
   }, [postId]);
 
   // دالة لتحديث عدد الإعجابات في قاعدة البيانات

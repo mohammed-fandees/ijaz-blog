@@ -24,7 +24,10 @@
     "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/supabase-js": "^2.49.8",
     "@tanstack/react-query": "^5.77.0",
+    "@tiptap/extension-image": "^2.12.0",
+    "@tiptap/extension-link": "^2.12.0",
     "@tiptap/extension-placeholder": "^2.12.0",
+    "@tiptap/extension-text-align": "^2.12.0",
     "@tiptap/react": "^2.12.0",
     "@tiptap/starter-kit": "^2.12.0",
     "class-variance-authority": "^0.7.1",
@@ -44,6 +47,7 @@
     "remark-gfm": "^4.0.1",
     "tailwind-merge": "^3.3.0",
     "tailwindcss-animate": "^1.0.7",
+    "tiptap": "^1.32.2",
     "zod": "^3.25.28",
     "zustand": "^5.0.5"
   },

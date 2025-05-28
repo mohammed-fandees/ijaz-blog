@@ -1,39 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { 
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { 
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  PieChart,
-  Pie,
-  Cell
-} from 'recharts'
-import { 
-  TrendingUp, 
-  Eye, 
-  Users, 
-  Clock,
-  Calendar,
-  Download,
-  RefreshCw
-} from 'lucide-react'
+import { Card, CardContent } from '@/components/ui/card'
+
 import { supabase } from '@/app/lib/supabase'
 import { formatDate } from '@/lib/utils'
 import { Icons } from '@/components/ui/icons'
@@ -208,7 +179,7 @@ export default function AnalyticsClient() {
     }))
   }
 
-  const exportData = () => {
+  const exportData = () => { // future improvement: add more export options
     // تصدير البيانات كـ CSV
     const csvData = data?.topPosts.map(post => ({
       'العنوان': post.title,

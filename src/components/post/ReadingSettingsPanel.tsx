@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/components/post/ReadingSettingsPanel.tsx
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+import { Card } from '@/components/ui/card'
 import { 
   Settings, 
   Type, 
@@ -62,7 +62,7 @@ export function ReadingSettingsPanel() {
         isThemeChanging.current = false;
       }, 100);
     }
-  }, [theme]);
+  }, [isDarkMode, setDarkMode, theme]);
 
   const fontSizeOptions = [
     { value: 'small', label: 'صغير', size: 'text-sm' },

@@ -5,19 +5,7 @@ import React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Card } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { 
-  LayoutDashboard,
-  FileText,
-  FolderOpen,
-  BarChart3,
-  Settings,
-  Users,
-  Upload,
-  Calendar,
-  Tags,
-  Bookmark
-} from 'lucide-react'
+
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Icons } from '@/components/ui/icons'

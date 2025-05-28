@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/components/admin/PostEditor.tsx
 'use client'
 
@@ -10,6 +11,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 // import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import Image from 'next/image'
 import { 
   Select,
   SelectContent,
@@ -32,8 +34,7 @@ import {
   Eye,
   Upload,
   X,
-  Calendar,
-  Clock
+
 } from 'lucide-react'
 import { supabase } from '@/app/lib/supabase'
 import { generateSlug, calculateReadingTime, generateExcerpt } from '@/lib/utils'
@@ -47,7 +48,7 @@ interface PostEditorProps {
 export function PostEditor({ postId, initialData }: PostEditorProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const [categories, setCategories] = useState([])
+  const [categories, setCategories] = useState<any[]>([])
   const [tags, setTags] = useState<string[]>([])
   const [newTag, setNewTag] = useState('')
   const [isPreview, setIsPreview] = useState(false)
@@ -472,13 +473,16 @@ export function PostEditor({ postId, initialData }: PostEditorProps) {
                   <Upload className="mr-2 h-4 w-4" />
                   رفع صورة
                 </Button>
-                
                 {formData.featured_image && (
                   <div className="relative">
-                    <img
+                    <Image
                       src={formData.featured_image}
                       alt="معاينة الصورة"
                       className="w-full h-32 object-cover rounded"
+                      layout="responsive"
+                      width={400}
+                      height={128}
+                      unoptimized
                     />
                   </div>
                 )}

@@ -3,35 +3,21 @@
 import React from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { ThemeToggle } from '@/components/ui/ThemeToggle'
-import { 
-  Bell, 
-  User, 
-  LogOut,
-  Settings,
-  Home
-} from 'lucide-react'
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useAuthStore } from '@/store/useAuthStore'
-import { useRouter } from 'next/navigation'
 import { useAuth } from '@/lib/auth'
 import { Icons } from '@/components/ui/icons'
 
 export function AdminHeader() {
-  const { user, logout } = useAuthStore()
-  const router = useRouter()
+  const { user } = useAuthStore()
   const { signOut } = useAuth()
 
-  const handleLogout = () => {
-    logout()
-    router.push('/')
-  }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">

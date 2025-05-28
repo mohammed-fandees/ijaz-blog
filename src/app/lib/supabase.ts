@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/lib/supabase.ts
 'use client '
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'

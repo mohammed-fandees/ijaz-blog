@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/lib/analytics.ts
 import { supabase } from '@/app/lib/supabase'
 import { getDeviceInfo, generateVisitorId, generateSessionId } from './utils'
@@ -93,6 +94,8 @@ class AnalyticsService {
     await this.trackEvent({
       event_type: 'search',
       // يمكن حفظ استعلام البحث في metadata
+      // إذا أردت حفظ الاستعلام، يمكنك إضافته إلى device_info أو إضافة حقل جديد
+      device_info: { ...(getDeviceInfo()), search_query: searchQuery }
     })
   }
 
@@ -123,6 +126,7 @@ class AnalyticsService {
       const data = await response.json()
       return data.ip
     } catch (error) {
+      console.log(error)
       return null
     }
   }

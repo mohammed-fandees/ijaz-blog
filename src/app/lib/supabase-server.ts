@@ -3,7 +3,7 @@ import { cookies } from 'next/headers'
 
 
 // للخادم (Server-side)
-export const createServerSideSupabase = async () => {
-  const cookieStore = await cookies()
+export const createServerSideSupabase = () => {
+  const cookieStore = cookies()
   return createServerComponentClient({ cookies: () => cookieStore })
 }

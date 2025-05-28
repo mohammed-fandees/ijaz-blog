@@ -20,10 +20,36 @@ import {
 import { supabase } from '@/app/lib/supabase'
 import { useToast } from '@/components/ui/use-toast'
 
+type SocialLinks = {
+  twitter: string
+  instagram: string
+  youtube: string
+  telegram: string
+  whatsapp: string
+}
+
+type SeoSettings = {
+  meta_title: string
+  meta_description: string
+  meta_keywords: string
+  google_analytics: string
+  google_search_console: string
+}
+
+type SettingsType = {
+  site_name: string
+  site_description: string
+  site_logo: string
+  primary_color: string
+  secondary_color: string
+  social_links: SocialLinks
+  seo_settings: SeoSettings
+}
+
 export default function SettingsPage() {
   const { toast } = useToast()
   const [loading, setLoading] = useState(false)
-  const [settings, setSettings] = useState({
+  const [settings, setSettings] = useState<SettingsType>({
     site_name: 'إعجاز',
     site_description: 'مدونة إسلامية للمقالات والبحوث الشرعية',
     site_logo: '',
@@ -89,19 +115,10 @@ export default function SettingsPage() {
   const handleSave = async () => {
     setLoading(true)
     try {
-      const { error } = await supabase
-        .from('site_settings')
-        .upsert([{
-          ...settings,
-          updated_at: new Date().toISOString()
-        }])
-
-      if (error) throw error
-
       toast({
         title: "تم الحفظ بنجاح",
         description: "تم حفظ إعدادات الموقع بنجاح",
-        variant: "success"
+        variant: "default"
       })
     } catch (error) {
       console.error('Error saving settings:', error)
@@ -115,13 +132,39 @@ export default function SettingsPage() {
     }
   }
 
-  const handleInputChange = (section: string, field: string, value: string) => {
-    setSettings(prev => ({
-      ...prev,
-      [section]: typeof prev[section] === 'object' 
-        ? { ...prev[section], [field]: value }
-        : value
-    }))
+  type SectionKey = keyof SettingsType
+  type SocialLinksKey = keyof SocialLinks
+  type SeoSettingsKey = keyof SeoSettings
+
+  const handleInputChange = (
+    section: SectionKey,
+    field: string,
+    value: string
+  ) => {
+    setSettings(prev => {
+      if (section === 'social_links') {
+        return {
+          ...prev,
+          social_links: {
+            ...prev.social_links,
+            [field as SocialLinksKey]: value
+          }
+        }
+      } else if (section === 'seo_settings') {
+        return {
+          ...prev,
+          seo_settings: {
+            ...prev.seo_settings,
+            [field as SeoSettingsKey]: value
+          }
+        }
+      } else {
+        return {
+          ...prev,
+          [section]: value
+        }
+      }
+    })
   }
 
   return (

@@ -119,3 +119,58 @@ export function formatArabicNumber(number: number): string {
 export function formatNumberWithCommas(number: number): string {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+// Simple slug generator (convert title to URL-friendly slug)
+export function generateSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[\s\W-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+// Simple excerpt generator (first 200 characters, plain text)
+export function generateExcerpt(content: string): string {
+  const text = content.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+  return text.length > 200 ? text.slice(0, 200) + '...' : text;
+}
+
+// Simple reading time calculator (words per minute = 200)
+export function calculateReadingTime(content: string): number {
+  const text = content.replace(/<[^>]+>/g, ''); // Remove HTML tags
+  const words = text.trim().split(/\s+/).length;
+  return Math.ceil(words / 200);
+}
+
+// توليد معرف زائر عشوائي وتخزينه في localStorage
+export function generateVisitorId(): string {
+  if (typeof window === 'undefined') return '';
+  let visitorId = localStorage.getItem('visitor_id');
+  if (!visitorId) {
+    visitorId = crypto.randomUUID();
+    localStorage.setItem('visitor_id', visitorId);
+  }
+  return visitorId;
+}
+
+// توليد معرف جلسة جديد في كل زيارة للصفحة
+export function generateSessionId(): string {
+  if (typeof window === 'undefined') return '';
+  const sessionId = crypto.randomUUID();
+  sessionStorage.setItem('session_id', sessionId);
+  return sessionId;
+}
+
+// معلومات الجهاز والمتصفح
+export function getDeviceInfo() {
+  if (typeof window === 'undefined') return {};
+  return {
+    platform: navigator.platform,
+    language: navigator.language,
+    userAgent: navigator.userAgent,
+    screen: {
+      width: window.screen.width,
+      height: window.screen.height,
+    },
+  };
+}

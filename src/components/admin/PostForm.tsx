@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
-import { Editor } from '@tiptap/react'
+// import { Editor } from '@tiptap/react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -69,6 +69,7 @@ export function PostForm() {
       })
       router.push('/admin/posts')
     } catch (error) {
+      console.log(error)
       toast({
         variant: 'destructive',
         title: 'حدث خطأ',

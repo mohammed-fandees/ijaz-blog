@@ -9,6 +9,7 @@ interface SearchFormProps {
   defaultValue?: string
   categorySlug?: string
   tag?: string
+  onSearch?: (query: string) => void
 }
 
 export function SearchForm({ defaultValue = '', categorySlug, tag }: SearchFormProps) {
@@ -45,7 +46,6 @@ export function SearchForm({ defaultValue = '', categorySlug, tag }: SearchFormP
   return (
     <form onSubmit={handleSubmit} className="relative">
       <div className="relative group">
-        <div className={`absolute inset-0 rounded-lg transition-all duration-300 ${isFocused ? 'shadow-md shadow-islamic-primary/20' : 'shadow-sm'}`}></div>
         <Search className={`absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors duration-300 ${isFocused ? 'text-islamic-primary' : 'text-muted-foreground'}`} />
         <input
           type="text"
