@@ -54,18 +54,68 @@ export function truncateText(text: string, maxLength: number): string {
 export function formatDate(value: unknown): string {
   if (value === null || value === undefined) return '—';
 
-  if (typeof value === 'number') {
-    return new Intl.NumberFormat().format(value); // e.g., 10000 → "10,000"
-  }
-
-  if (typeof value === 'string') {
-    const trimmed = value.trim();
-    return trimmed.length > 100 ? trimmed.slice(0, 97) + '...' : trimmed;
-  }
+  let date: Date | null = null;
 
   if (value instanceof Date) {
-    return value.toLocaleDateString();
+    date = value;
+  } else if (typeof value === 'string' || typeof value === 'number') {
+    const parsed = new Date(value);
+    if (!isNaN(parsed.getTime())) {
+      date = parsed;
+    }
+  }
+
+  if (date) {
+    // Format as "27 مايو 2025"
+    return date.toLocaleDateString('ar-EG', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+    });
   }
 
   return String(value);
+}
+
+/**
+ * تنسيق الأرقام الكبيرة بشكل قابل للقراءة باللغة العربية
+ * مثلا: 1000 -> 1 ألف، 1500 -> 1.5 ألف، 1000000 -> 1 مليون
+ */
+export function formatArabicNumber(number: number): string {
+  if (number === undefined || number === null) return '0';
+  
+  if (number === 0) return '0';
+  
+  // تحويل مليون وأكثر
+  if (number >= 1000000) {
+    const millions = number / 1000000;
+    // إذا كان العدد مليون بالضبط، لا نظهر الكسور
+    if (millions === Math.floor(millions)) {
+      return `${Math.floor(millions)} مليون`;
+    }
+    // وإلا نظهر رقم عشري واحد
+    return `${millions.toFixed(1)} مليون`;
+  }
+  
+  // تحويل ألف وأكثر
+  if (number >= 1000) {
+    const thousands = number / 1000;
+    // إذا كان العدد ألف بالضبط، لا نظهر الكسور
+    if (thousands === Math.floor(thousands)) {
+      return `${Math.floor(thousands)} ألف`;
+    }
+    // وإلا نظهر رقم عشري واحد
+    return `${thousands.toFixed(1)} ألف`;
+  }
+  
+  // الأرقام الأقل من 1000 تظهر كما هي
+  return number.toString();
+}
+
+/**
+ * تنسيق الأرقام الكبيرة بإضافة فواصل كل 3 أرقام
+ * مثلا: 1000 -> 1,000، 1000000 -> 1,000,000
+ */
+export function formatNumberWithCommas(number: number): string {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }

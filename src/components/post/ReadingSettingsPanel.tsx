@@ -1,7 +1,7 @@
 // src/components/post/ReadingSettingsPanel.tsx
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -12,10 +12,13 @@ import {
   Maximize, 
   Palette,
   X,
-  RotateCcw
+  RotateCcw,
+  Sun,
+  Moon
 } from 'lucide-react'
 import { useSettingsStore } from '@/store/useSettingsStore'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTheme } from 'next-themes'
 
 export function ReadingSettingsPanel() {
   const [isOpen, setIsOpen] = useState(false)
@@ -25,13 +28,41 @@ export function ReadingSettingsPanel() {
     lineHeight,
     textWidth,
     backgroundColor,
+    isDarkMode,
     setFontSize,
     setFontFamily,
     setLineHeight,
     setTextWidth,
     setBackgroundColor,
+    setDarkMode,
     resetToDefaults
   } = useSettingsStore()
+  
+  const { theme } = useTheme()
+  const isThemeChanging = useRef(false)
+  
+  // تزامن سمة النظام مع إعدادات الوضع الداكن - منع التحديثات المتكررة
+  useEffect(() => {
+    // نتجاهل التغييرات المتكررة
+    if (isThemeChanging.current) {
+      return;
+    }
+    
+    // فقط إذا كان هناك تغيير ضروري
+    if (theme === 'dark' && !isDarkMode) {
+      isThemeChanging.current = true;
+      setDarkMode(true);
+      setTimeout(() => {
+        isThemeChanging.current = false;
+      }, 100);
+    } else if (theme === 'light' && isDarkMode) {
+      isThemeChanging.current = true;
+      setDarkMode(false);
+      setTimeout(() => {
+        isThemeChanging.current = false;
+      }, 100);
+    }
+  }, [theme]);
 
   const fontSizeOptions = [
     { value: 'small', label: 'صغير', size: 'text-sm' },
@@ -58,12 +89,20 @@ export function ReadingSettingsPanel() {
     { value: 'wide', label: 'واسع' }
   ]
 
-  const backgroundOptions = [
-    { value: 'white', label: 'أبيض', color: '#ffffff', border: true },
-    { value: 'beige', label: 'بيج', color: '#f5f5dc' },
-    { value: 'gray', label: 'رمادي', color: '#f8f9fa' },
-    { value: 'sepia', label: 'سيبيا', color: '#fdf6e3' }
-  ]
+  // تحديث خيارات ألوان الخلفية ليناسب كل من الوضع الفاتح والداكن
+  const backgroundOptions = isDarkMode 
+    ? [
+        { value: 'white', label: 'داكن', color: '#1a1a1a', border: true },
+        { value: 'beige', label: 'بني داكن', color: '#2a2826' },
+        { value: 'gray', label: 'رمادي داكن', color: '#202124' },
+        { value: 'sepia', label: 'سيبيا داكن', color: '#2c2b25' }
+      ]
+    : [
+        { value: 'white', label: 'أبيض', color: '#ffffff', border: true },
+        { value: 'beige', label: 'بيج', color: '#f5f5dc' },
+        { value: 'gray', label: 'رمادي', color: '#f8f9fa' },
+        { value: 'sepia', label: 'سيبيا', color: '#fdf6e3' }
+      ]
 
   return (
     <>
@@ -123,6 +162,23 @@ export function ReadingSettingsPanel() {
                         <X className="h-4 w-4" />
                       </Button>
                     </div>
+                  </div>
+                  
+                  {/* تبديل الوضع الداكن */}
+                  <div className="mb-6">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setDarkMode(!isDarkMode)}
+                      className="w-full font-arabic flex items-center justify-between"
+                    >
+                      <span>{isDarkMode ? 'الوضع الفاتح' : 'الوضع الداكن'}</span>
+                      {isDarkMode ? (
+                        <Sun className="h-4 w-4 ml-2" />
+                      ) : (
+                        <Moon className="h-4 w-4 ml-2" />
+                      )}
+                    </Button>
                   </div>
 
                   {/* حجم الخط */}
@@ -225,7 +281,7 @@ export function ReadingSettingsPanel() {
                           className="font-arabic text-xs flex items-center justify-center space-x-2 space-x-reverse"
                         >
                           <div 
-                            className={`w-4 h-4 rounded-full ${option.border ? 'border' : ''}`}
+                            className={`w-4 h-4 rounded-full ${option.border ? 'border border-border' : ''}`}
                             style={{ backgroundColor: option.color }}
                           />
                           <span>{option.label}</span>

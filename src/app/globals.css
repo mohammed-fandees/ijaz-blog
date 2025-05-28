@@ -97,6 +97,11 @@
   }
 }
 
+@layer base {
+  *:focus-visible {
+    @apply ring-1 ring-islamic-primary/50 outline-none !important;
+  }
+}
 
 
 @layer base {

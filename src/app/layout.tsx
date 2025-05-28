@@ -1,8 +1,18 @@
-// src/app/layout.tsx
 import './globals.css'
-import type { Metadata } from 'next'
-import { ThemeProvider } from '@/components/providers/ThemeProvider'
-import { QueryProvider } from '@/components/providers/QueryProvider'
+import { Metadata } from 'next'
+import { Inter, IBM_Plex_Sans_Arabic } from 'next/font/google'
+import { cn } from '@/lib/utils'
+import { ClientLayout } from '@/components/layout/ClientLayout'
+import { ThemeProvider } from '@/components/providers/theme-provider'
+import { Toaster } from '@/components/ui/toaster'
+
+const inter = Inter({ subsets: ['latin'] })
+
+const ibmPlexSansArabic = IBM_Plex_Sans_Arabic({
+  weight: ['100', '200', '300', '400', '500', '600', '700'],
+  subsets: ['arabic'],
+  variable: '--font-ibm-plex-sans-arabic',
+})
 
 export const metadata: Metadata = {
   title: {
@@ -51,17 +61,24 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ar" dir="rtl" suppressHydrationWarning>
-      <body className="min-h-screen bg-background font-arabic antialiased">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <QueryProvider>
-            {children}
-          </QueryProvider>
+    <html lang="ar" dir="rtl" suppressHydrationWarning={true}>
+      <head />
+      <body className={cn(
+        inter.className,
+        ibmPlexSansArabic.variable,
+        'min-h-screen bg-background antialiased font-arabic'
+      )}
+      suppressHydrationWarning={true}
+      >
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <div className="relative flex min-h-screen flex-col">
+            <div className="flex-1">
+              <ClientLayout>
+                {children}
+              </ClientLayout>
+            </div>
+          </div>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

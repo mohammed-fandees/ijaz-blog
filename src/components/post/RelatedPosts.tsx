@@ -115,7 +115,7 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
               <Link href={`/posts/${post.slug}`}>
                 <div className="flex items-center justify-between group-hover:text-islamic-primary transition-colors">
                   <span className="text-sm font-medium font-arabic">اقرأ المزيد</span>
-                  <ArrowLeft className="h-4 w-4 transform transition-transform group-hover:translate-x-1" />
+                  <ArrowLeft className="h-4 w-4 transform transition-transform group-hover:-translate-x-1" />
                 </div>
               </Link>
             </CardContent>

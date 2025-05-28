@@ -1,7 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'blog.zoya.finance',
+        pathname: '/content/images/**',
+      },
+    ],
+  },
 };
 
 export default nextConfig;

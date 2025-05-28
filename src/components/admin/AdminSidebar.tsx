@@ -19,120 +19,87 @@ import {
   Bookmark
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { Icons } from '@/components/ui/icons'
 
-const menuItems = [
+const sidebarItems = [
   {
-    title: 'لوحة التحكم',
-    href: '/admin',
-    icon: LayoutDashboard,
-    badge: null
+    title: 'لوحة المعلومات',
+    href: '/admin/dashboard',
+    icon: Icons.dashboard,
   },
   {
     title: 'المقالات',
     href: '/admin/posts',
-    icon: FileText,
-    badge: 'جديد'
+    icon: Icons.post,
   },
   {
-    title: 'الفئات',
+    title: 'التصنيفات',
     href: '/admin/categories',
-    icon: FolderOpen,
-    badge: null
-  },
-  {
-    title: 'العلامات',
-    href: '/admin/tags',
-    icon: Tags,
-    badge: null
+    icon: Icons.category,
   },
   {
     title: 'الوسائط',
     href: '/admin/media',
-    icon: Upload,
-    badge: null
+    icon: Icons.media,
   },
   {
     title: 'التحليلات',
     href: '/admin/analytics',
-    icon: BarChart3,
-    badge: null
+    icon: Icons.analytics,
   },
   {
     title: 'الإعدادات',
     href: '/admin/settings',
-    icon: Settings,
-    badge: null
-  }
+    icon: Icons.settings,
+  },
 ]
 
 export function AdminSidebar() {
   const pathname = usePathname()
 
   return (
-    <aside className="w-64 bg-white shadow-sm border-l h-screen sticky top-0">
-      <div className="p-6">
-        <Link href="/admin" className="flex items-center space-x-2 space-x-reverse mb-8">
-          <div className="w-8 h-8 bg-islamic-primary rounded-lg flex items-center justify-center">
-            <Bookmark className="h-5 w-5 text-white" />
-          </div>
-          <span className="text-xl font-bold font-arabic text-islamic-primary">
-            لوحة التحكم
-          </span>
-        </Link>
+    <aside className="w-64 border-l bg-background">
+      <nav className="space-y-2 p-4">
+        {sidebarItems.map((item) => {
+          const Icon = item.icon
+          const isActive = pathname === item.href
 
-        <nav className="space-y-2">
-          {menuItems.map((item) => {
-            const isActive = pathname === item.href
-            const Icon = item.icon
-
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
+          return (
+            <Link key={item.href} href={item.href}>
+              <Button
+                variant={isActive ? 'secondary' : 'ghost'}
                 className={cn(
-                  'flex items-center justify-between p-3 rounded-lg transition-colors font-arabic',
-                  isActive 
-                    ? 'bg-islamic-primary text-white' 
-                    : 'text-gray-700 hover:bg-gray-100'
+                  'w-full justify-start',
+                  isActive && 'bg-secondary'
                 )}
               >
-                <div className="flex items-center space-x-3 space-x-reverse">
-                  <Icon className="h-5 w-5" />
-                  <span>{item.title}</span>
-                </div>
-                
-                {item.badge && (
-                  <Badge 
-                    variant={isActive ? 'secondary' : 'default'}
-                    className="text-xs"
-                  >
-                    {item.badge}
-                  </Badge>
-                )}
-              </Link>
-            )
-          })}
-        </nav>
+                <Icon className="ml-2 h-4 w-4" />
+                {item.title}
+              </Button>
+            </Link>
+          )
+        })}
+      </nav>
 
-        {/* إحصائيات سريعة */}
-        <Card className="mt-8 p-4">
-          <h3 className="font-semibold font-arabic mb-3 text-sm">إحصائيات سريعة</h3>
-          <div className="space-y-2 text-sm">
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">المقالات المنشورة</span>
-              <span className="font-medium">24</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">المسودات</span>
-              <span className="font-medium">7</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">المشاهدات اليوم</span>
-              <span className="font-medium">1.2K</span>
-            </div>
+      {/* إحصائيات سريعة */}
+      <Card className="mt-8 p-4">
+        <h3 className="font-semibold font-arabic mb-3 text-sm">إحصائيات سريعة</h3>
+        <div className="space-y-2 text-sm">
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">المقالات المنشورة</span>
+            <span className="font-medium">24</span>
           </div>
-        </Card>
-      </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">المسودات</span>
+            <span className="font-medium">7</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">المشاهدات اليوم</span>
+            <span className="font-medium">1.2K</span>
+          </div>
+        </div>
+      </Card>
     </aside>
   )
 }

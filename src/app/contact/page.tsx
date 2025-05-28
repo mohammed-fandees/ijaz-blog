@@ -12,11 +12,28 @@ import {
   MessageCircle, 
   Send,
   CheckCircle,
-  MapPin,
   Phone,
-  Globe
+  Globe,
+  Clock
 } from 'lucide-react'
 import { FaWhatsapp, FaTelegram, FaTwitter, FaInstagram } from 'react-icons/fa'
+import { motion } from 'framer-motion'
+
+// متغيرات الحركة
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+}
+
+const item = {
+  hidden: { y: 20, opacity: 0 },
+  show: { y: 0, opacity: 1, transition: { duration: 0.5 } }
+}
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -83,6 +100,9 @@ export default function ContactPage() {
       <div className="container mx-auto px-4">
         {/* رأس الصفحة */}
         <div className="text-center mb-12">
+          <div className="inline-block p-3 rounded-full bg-islamic-primary/10 text-islamic-primary mb-6">
+            <Mail className="h-8 w-8" />
+          </div>
           <h1 className="text-4xl font-bold font-arabic text-islamic-primary mb-4">
             تواصل معنا
           </h1>
@@ -91,12 +111,20 @@ export default function ContactPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <motion.div 
+          className="grid grid-cols-1 lg:grid-cols-3 gap-8"
+          variants={container}
+          initial="hidden"
+          animate="show"
+        >
           {/* طرق التواصل */}
-          <div className="lg:col-span-1 space-y-6">
-            <Card>
+          <motion.div className="lg:col-span-1 space-y-6" variants={item}>
+            <Card className="border border-border/50 overflow-hidden hover:shadow-md transition-shadow">
               <CardHeader>
-                <CardTitle className="font-arabic">طرق التواصل</CardTitle>
+                <CardTitle className="font-arabic flex items-center gap-2">
+                  <MessageCircle className="h-5 w-5 text-islamic-primary" />
+                  طرق التواصل
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 {contactMethods.map((method, index) => {
@@ -124,9 +152,12 @@ export default function ContactPage() {
             </Card>
 
             {/* وسائل التواصل الاجتماعي */}
-            <Card>
+            <Card className="border border-border/50 overflow-hidden hover:shadow-md transition-shadow">
               <CardHeader>
-                <CardTitle className="font-arabic">تابعنا على</CardTitle>
+                <CardTitle className="font-arabic flex items-center gap-2">
+                  <Globe className="h-5 w-5 text-islamic-gold" />
+                  تابعنا على
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 gap-4">
@@ -148,9 +179,12 @@ export default function ContactPage() {
             </Card>
 
             {/* ساعات العمل */}
-            <Card>
+            <Card className="border border-border/50 overflow-hidden hover:shadow-md transition-shadow">
               <CardHeader>
-                <CardTitle className="font-arabic">ساعات الاستجابة</CardTitle>
+                <CardTitle className="font-arabic flex items-center gap-2">
+                  <Clock className="h-5 w-5 text-green-600" />
+                  ساعات الاستجابة
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
@@ -165,13 +199,16 @@ export default function ContactPage() {
                 </div>
               </CardContent>
             </Card>
-          </div>
+          </motion.div>
 
           {/* نموذج الاتصال */}
-          <div className="lg:col-span-2">
-            <Card>
+          <motion.div className="lg:col-span-2" variants={item}>
+            <Card className="border border-border/50 overflow-hidden hover:shadow-md transition-shadow">
               <CardHeader>
-                <CardTitle className="font-arabic">أرسل لنا رسالة</CardTitle>
+                <CardTitle className="font-arabic flex items-center gap-2">
+                  <Send className="h-5 w-5 text-islamic-primary" />
+                  أرسل لنا رسالة
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 {success && (
@@ -248,26 +285,31 @@ export default function ContactPage() {
                     className="w-full font-arabic"
                   >
                     {loading ? (
-                      <>
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      <div className="flex items-center">
+                        <div className="animate-spin mr-2 h-4 w-4 border-2 border-white rounded-full border-t-transparent"></div>
                         جاري الإرسال...
-                      </>
+                      </div>
                     ) : (
-                      <>
-                        <Send className="ml-2 h-4 w-4" />
+                      <div className="flex items-center gap-2">
+                        <Send className="h-4 w-4" />
                         إرسال الرسالة
-                      </>
+                      </div>
                     )}
                   </Button>
                 </form>
               </CardContent>
             </Card>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* معلومات إضافية */}
-        <div className="mt-16 text-center">
-          <Card className="max-w-4xl mx-auto">
+        <motion.div 
+          className="mt-16 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+        >
+          <Card className="max-w-4xl mx-auto border border-border/50 overflow-hidden hover:shadow-md transition-shadow">
             <CardContent className="p-8">
               <h2 className="text-2xl font-bold font-arabic text-islamic-primary mb-4">
                 نرحب بتواصلكم
@@ -278,7 +320,7 @@ export default function ContactPage() {
               </p>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-                <div className="text-center">
+                <div className="text-center p-4 rounded-lg bg-islamic-primary/5 hover:bg-islamic-primary/10 transition-colors">
                   <div className="w-12 h-12 rounded-full bg-islamic-primary/10 flex items-center justify-center mx-auto mb-3">
                     <MessageCircle className="h-6 w-6 text-islamic-primary" />
                   </div>
@@ -286,7 +328,7 @@ export default function ContactPage() {
                   <p className="text-sm text-muted-foreground">أسئلة حول المحتوى والموقع</p>
                 </div>
                 
-                <div className="text-center">
+                <div className="text-center p-4 rounded-lg bg-islamic-gold/5 hover:bg-islamic-gold/10 transition-colors">
                   <div className="w-12 h-12 rounded-full bg-islamic-gold/10 flex items-center justify-center mx-auto mb-3">
                     <Globe className="h-6 w-6 text-islamic-gold" />
                   </div>
@@ -294,9 +336,9 @@ export default function ContactPage() {
                   <p className="text-sm text-muted-foreground">أفكار لمواضيع جديدة</p>
                 </div>
                 
-                <div className="text-center">
-                  <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-3">
-                    <Mail className="h-6 w-6 text-green-600" />
+                <div className="text-center p-4 rounded-lg bg-islamic-primary/5 hover:bg-islamic-primary/10 transition-colors">
+                  <div className="w-12 h-12 rounded-full bg-islamic-primary/10 flex items-center justify-center mx-auto mb-3">
+                    <Mail className="h-6 w-6 text-islamic-primary" />
                   </div>
                   <h3 className="font-semibold font-arabic mb-2">الدعم التقني</h3>
                   <p className="text-sm text-muted-foreground">مساعدة في استخدام الموقع</p>
@@ -304,7 +346,7 @@ export default function ContactPage() {
               </div>
             </CardContent>
           </Card>
-        </div>
+        </motion.div>
       </div>
     </div>
   )

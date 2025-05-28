@@ -1,8 +1,7 @@
 // src/lib/supabase.ts
-'use-client'
-import { createClientComponentClient, createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+'use client '
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { createClient } from '@supabase/supabase-js'
-import { cookies } from 'next/headers'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -10,13 +9,11 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 // للعميل (Client-side)
 export const createClientSideSupabase = () => createClientComponentClient()
 
-// للخادم (Server-side)
-export const createServerSideSupabase = () => createServerComponentClient({ cookies })
 
 // العميل العام
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
-// أنواع البيانات
+// أنواع البيانات 
 export type Database = {
   public: {
     Tables: {

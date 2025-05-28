@@ -1,5 +1,5 @@
 // src/lib/analytics.ts
-import { supabase } from './supabase'
+import { supabase } from '@/app/lib/supabase'
 import { getDeviceInfo, generateVisitorId, generateSessionId } from './utils'
 
 interface AnalyticsEvent {
